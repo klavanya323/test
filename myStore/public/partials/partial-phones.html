@@ -1,18 +1,19 @@
-<div class="phonesInfo" >
+<div class="phonesInfo" ng-controller="PhonesCtrl">
 
 
     <ul ng-repeat="phone in phones">
         <div class="row">
             <div class="col-lg-6">
-             <div class="panel panel-default ">
-                <div class="panel-body">
-                    <p ng-model="productAddedToCart">{{phone.phoneName}}</p>
-                    <p>Save $150 on 32GB or 64GBFree shipping</p>
+                <div class="panel panel-default ">
+                    <div class="panel-body">
+                        <p >{{phone.name}}</p>
+                        <p>Save $150 on 32GB or 64GBFree shipping</p>
+                    </div>
                 </div>
-             </div>
-                </div>
+            </div>
             <div class="container">
-                <button class="panel panel-default btn btn-success col-lg-6" ng-click="addToCart()">Buy From {{phone.price}}</button>
+                <button class="panel panel-default btn btn-success col-lg-6" ng-model="clickedProduct" ng-click="DisplayProduct()">Buy From {{phone.price | currency}}</button>
+
 
             </div>
 
@@ -56,10 +57,10 @@
             </a>
         </div>
         <div>
-             <img class="img-responsive" src="/images/img2.jpg">
+            <img class="img-responsive" src="/images/img2.jpg">
         </div>
         <li>{{phone.Memorysize}}</li>
         <li>{{phone.qty}}</li>
     </ul>
-    </div>
+</div>
 
