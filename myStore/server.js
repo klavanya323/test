@@ -186,19 +186,19 @@ app.get('/api/chromebooks', function (req, res) {
 });
 
 
-app.get('/api/getPhones/:phone', function (req, res) {
+app.get('getPhones/:phonename', function (req, res) {
     
-    var newphone = req.params.phone;
+    var selectedPhone = req.params.phonename;
 
-    getPhone(newphone,function (err, newphone) {
+    getPhone(selectedPhone,function (err, selectedPhone) {
         
         if (err) {
-            res.send("Couldnt get phones");
+            res.send("Couldnt get selected phone");
         }
         else {
             
             res.set("Content-Type", "application/json");
-            res.send(newphone);
+            res.send(selectedPhone);
         }
     
     

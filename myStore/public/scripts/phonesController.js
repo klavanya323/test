@@ -61,21 +61,27 @@ app.controller("PhonesCtrl", ["$scope", "$http", "$state", function ($scope, $ht
 
         });
 
-        $scope.DisplayProduct = function () {
+        $scope.DisplayProduct = function (phoneName) {
             
-            clickedProducts.push($scope.clickedProduct);
-
-            angular.forEach(clickedProducts, function (clickedProduct, i) {
-                this.split(' ').join('');
+            var str = "getPhones/"+ phoneName ;
+            $http({
+                url: str,
                 
-                app.stateProvider.state(clickedProduct,
+                method: "get",
+                headers: { 'Content-Type': "application/json" }
+            }).then(function (res) {
+                $scope.selectedPhone = res.data;
+
+                app.stateProvider.state($scope.selectedPhone.Name, 
                     {
-                    url: '/clickedProduct',
-                    // controller: product.Controller,
-                    template: "<div>{{clickedProduct}} page</div>"
+                    url: '/$scope.selectedPhone.Name',
+                    template: "<div>This is selected phone page</div>"
                 });
 
-            }, clickedProduct);
+            }, function (err) {
+                console.log("Couldnt get selected phone data" + err);
+
+            });
             
         };
 
