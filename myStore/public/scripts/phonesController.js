@@ -5,6 +5,7 @@
 var app=angular.module("myApp",['ui.router']);
 
 var products = [];
+var clickedProducts=[];
 
 var count = 0;
 
@@ -32,9 +33,9 @@ app.controller("IndexController", ["$scope", "$http", "$state", function ($scope
                 console.log("Couldnt get phones" + err);
             });
             
-            $scope.HandleEvent = function ($event) {
-                console.log("Hello World");
-            };
+            //$scope.HandleEvent = function ($event) {
+            //    console.log("Hello World");
+            //};
         }
         catch (err){
            
@@ -42,7 +43,11 @@ app.controller("IndexController", ["$scope", "$http", "$state", function ($scope
 }]);
 
 
-app.controller("PhonesCtrl",  ["$scope", "$http", "$state", function ($scope, $http , $state) {
+app.controller("PhonesCtrl", ["$scope", "$http", "$state", function ($scope, $http , $state) {
+        
+        var i = 0;
+
+                
         $http({
             url: '/api/phones',
             
@@ -55,6 +60,24 @@ app.controller("PhonesCtrl",  ["$scope", "$http", "$state", function ($scope, $h
             console.log("Couldnt get phones" + err);
 
         });
+
+        $scope.DisplayProduct = function () {
+            
+            clickedProducts.push($scope.clickedProduct);
+
+            angular.forEach(clickedProducts, function (clickedProduct, i) {
+                this.split(' ').join('');
+                
+                app.stateProvider.state(clickedProduct,
+                    {
+                    url: '/clickedProduct',
+                    // controller: product.Controller,
+                    template: "<div>{{clickedProduct}} page</div>"
+                });
+
+            }, clickedProduct);
+            
+        };
 
        
     }]);
