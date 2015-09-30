@@ -1,0 +1,15 @@
+{
+  "name": "myStore",
+  "version": "0.0.0",
+  "description": "myStore",
+  "main": "server.js",
+  "author": {
+    "name": "lavs",
+    "email": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.14.0",
+    "express": "^4.13.3",
+    "mongodb": "^2.0.43"
+  }
+}

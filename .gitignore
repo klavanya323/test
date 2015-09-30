@@ -1,0 +1,14 @@
+node_modules
+myStore/.idea/.name
+myStore/.idea/encodings.xml
+myStore/.idea/jsLibraryMappings.xml
+myStore/.idea/libraries/myStore_node_modules.xml
+myStore/.idea/misc.xml
+myStore/.idea/modules.xml
+myStore/.idea/myStore.iml
+myStore/.idea/scopes/scope_settings.xml
+myStore/.idea/vcs.xml
+myStore/.idea/workspace.xml
+myStore/.ntvs_analysis.dat
+.idea
+lib
