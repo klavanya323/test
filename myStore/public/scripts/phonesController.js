@@ -37,8 +37,7 @@ app.controller("IndexController", ["$scope", "$rootScope", "$http", "$state", fu
 app.controller("PhonesCtrl", ["$scope", "$rootScope", "$http", "$state", function ($scope, $rootScope, $http , $state) {
         
         var selectedPhone = null;
-
-            
+                   
         $http({
             url: '/api/phones',
             
@@ -90,26 +89,33 @@ app.controller("PhoneCtrl", ["$scope", "$rootScope", "$http", "$state", function
 
 
 
-//app.controller("cartCtrl", function ($scope) {
-    
-   
-//    $scope.addToCart = function () {
+app.controller("cartCtrl", ["$scope", "$rootScope", "$http", "$state", function ($scope, $rootScope, $http , $state){
+        
+        var products = [];
+        var elm = null;
+        $scope.AddToCart = function (product) {
+            
+            var productAddedToCart = product.name;
+            $http({
+                url: "/api/productAddedToCart",
+                method: "post",
+                headers: { 'Content-Type': "application/json" }
+            }).then(function (res) {
+                $scope.count += 1;
+        
+            }, function (err) { 
+        
+        
+        
+            });
 
-//        var productAddedToCart = productAddedToCart;
-//        $http({
-//            url: "/api/productAddedToCart",
-//            method: "post",
-//            headers: { 'Content-Type': "application/json" }
-//        }).then(function (res) { 
-//            $scope.count += 1;
-        
-//        }, function (err) { 
-        
-        
-        
-//        });
+
+            elm = angular.element($("#cart"));
+            $scope.products.push(product);
+
+        };
       
-//    };
+    }]);
 
 
     
@@ -244,12 +250,12 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             url: '/phone',
             controller: "PhoneCtrl",
             templateUrl: '/partials/partial-phone.html'
+        })
+       .state('cart', {
+            url: '/cart',
+            controller: "cartCtrl",
+            templateUrl: '/partials/partial-cart.html'
         });
-       //.state(products[3].Name, {
-       //     url: '/Phones',
-       //     controller: "PhonesCtrl",
-       //     templateUrl: '/partials/partial-phones.html'
-       // })
        //.state(products[4].Name, {
        //     url: '/Phones',
        //     controller: "phonesCtrl",
