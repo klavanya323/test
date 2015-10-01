@@ -112,7 +112,7 @@ function getPhone(newphone,next){
             next(err, null);
         }
         else {
-            db.collection("phones").findOne({ name: newphone }, next);
+            db.collection("Phones").findOne({ name: newphone }, next);
         }
     
     });
@@ -186,7 +186,7 @@ app.get('/api/chromebooks', function (req, res) {
 });
 
 
-app.get('getPhones/:phonename', function (req, res) {
+app.get('/getPhones/:phonename', function (req, res) {
     
     var selectedPhone = req.params.phonename;
 

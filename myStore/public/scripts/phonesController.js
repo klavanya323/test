@@ -5,11 +5,11 @@
 var app=angular.module("myApp",['ui.router']);
 
 var products = [];
-var clickedProducts=[];
+
 
 var count = 0;
 
-app.controller("IndexController", ["$scope", "$http", "$state", function ($scope, $http , $state){
+app.controller("IndexController", ["$scope", "$rootScope", "$http", "$state", function ($scope, $rootScope, $http , $state){
         try {
             $scope.name = "Lavanya";
             $http({
@@ -21,21 +21,12 @@ app.controller("IndexController", ["$scope", "$http", "$state", function ($scope
                 
                 res.data.forEach(function (product) { products.push(product);});
                 $scope.products = products;
-                $scope.products.forEach(function (product) {
-                    app.stateProvider.state(product.Name, 
-                    {
-                        url: product.Url,
-                        controller: product.Controller,
-                        templateUrl: product.templateUrl
-                    });
-                });
+                
             }, function (err) {
                 console.log("Couldnt get phones" + err);
             });
             
-            //$scope.HandleEvent = function ($event) {
-            //    console.log("Hello World");
-            //};
+            
         }
         catch (err){
            
@@ -43,11 +34,11 @@ app.controller("IndexController", ["$scope", "$http", "$state", function ($scope
 }]);
 
 
-app.controller("PhonesCtrl", ["$scope", "$http", "$state", function ($scope, $http , $state) {
+app.controller("PhonesCtrl", ["$scope", "$rootScope", "$http", "$state", function ($scope, $rootScope, $http , $state) {
         
-        var i = 0;
+        var selectedPhone = null;
 
-                
+            
         $http({
             url: '/api/phones',
             
@@ -62,31 +53,42 @@ app.controller("PhonesCtrl", ["$scope", "$http", "$state", function ($scope, $ht
         });
 
         $scope.DisplayProduct = function (phoneName) {
-            
-            var str = "getPhones/"+ phoneName ;
-            $http({
-                url: str,
-                
-                method: "get",
-                headers: { 'Content-Type': "application/json" }
-            }).then(function (res) {
-                $scope.selectedPhone = res.data;
-
-                app.stateProvider.state($scope.selectedPhone.Name, 
-                    {
-                    url: '/$scope.selectedPhone.Name',
-                    template: "<div>This is selected phone page</div>"
-                });
-
-            }, function (err) {
-                console.log("Couldnt get selected phone data" + err);
-
-            });
-            
+            $rootScope.selectedPhone = phoneName;
+            $state.go('phone');
         };
 
        
     }]);
+
+app.controller("PhoneCtrl", ["$scope", "$rootScope", "$http", "$state", function ($scope, $rootScope, $http , $state) {
+        
+        var str = "/getPhones/" + $rootScope.selectedPhone;
+        $http({
+            url: str,
+            method: "get",
+            headers: { 'Content-Type': "application/json" }
+        }).then(function (res) {
+            $scope.selectedPhone = res.data;
+
+           
+            //selectedProduct = $scope.selectedPhone.name;
+            
+            //app.stateProvider.state(selectedProduct, 
+            //        {
+            //    url: '/selectedProduct',
+            //    templateUrl: "/partials/partial-phone.html"
+            //});
+
+        }, function (err) {
+            console.log("Couldnt get selected phone data" + err);
+
+        });
+
+       
+    }]);
+
+
+
 
 //app.controller("cartCtrl", function ($scope) {
     
@@ -224,31 +226,25 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         app.stateProvider = $stateProvider;
         $urlRouterProvider.otherwise('/');
         
-        products.forEach(function (product) {
-            app.stateProvider.state(product.Name, 
-                    {
-                url: product.Url,
-                controller: product.Controller,
-                templateUrl: product.templateUrl
-            });
-        });
+        //products.forEach(function (product) {
+        //    app.stateProvider.state(product.Name, 
+        //            {
+        //        url: product.Url,
+        //        controller: product.Controller,
+        //        templateUrl: product.templateUrl
+        //    });});
 
-       // $stateProvider
-       // .state(products[0].Name, {
-       //     url: '/Phones',
-       //     controller: "PhonesCtrl",
-       //     templateUrl: '/partials/partial-phones.html'
-       // })
-       //.state(products[1].Name, {
-       //     url: '/Phones',
-       //     controller: "PhonesCtrl",
-       //     templateUrl: '/partials/partial-phones.html'
-       // })
-       //.state(products[2].Name, {
-       //     url: '/Phones',
-       //     controller: "PhonesCtrl",
-       //     templateUrl: '/partials/partial-phones.html'
-       // })
+        $stateProvider
+        .state('Phones', {
+            url: '/Phones',
+            controller: "PhonesCtrl",
+            templateUrl: '/partials/partial-phones.html'
+        })
+       .state('phone', {
+            url: '/phone',
+            controller: "PhoneCtrl",
+            templateUrl: '/partials/partial-phone.html'
+        });
        //.state(products[3].Name, {
        //     url: '/Phones',
        //     controller: "PhonesCtrl",
@@ -268,7 +264,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
        //     url: '/Phones',
        //     controller: "PhonesCtrl",
        //     templateUrl: '/partials/partial-phones.html'
-       // });
+        
         
 }]);
 
