@@ -1,9 +1,9 @@
 
   <div>
 
-      <ul class="dropdown-menu dropdown-cart" role="menu">
+      <ul class="dropdown-menu dropdown-cart" role="menu" ng-repeat="product in productsToCart">
 
-          <li><a class="text-center" href="">{{products[0].nmae}}</a></li>
+          <li><a class="text-center" href="">{{product.name}}</a></li>
       </ul>
       carts page
   </div>

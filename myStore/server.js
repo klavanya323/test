@@ -4,6 +4,7 @@ var mongodb = require('mongodb');
 var app = express();
 var port = process.env.port || 1337;
 var theDb = null;
+var count = 0;
 
 app.get('/', function (req, res) {
     res.redirect("/htmls/index.html");
@@ -120,6 +121,30 @@ function getPhone(newphone,next){
 
 function updatePhone(phone, next){
 
+
+}
+function saveCartData(cartData,next){
+    
+    
+    getdb(function (err, db) {
+        
+        if (err) {
+            next(err, null);
+        }
+        else {
+            count++;
+            db.collection("cart").insert(cartData, function (err, count) {
+                if (err) {
+                    next(err, --count);
+                }
+                else {
+                    next(null, count);
+                }
+            
+            });
+        }
+    
+    });
 
 }
 
@@ -271,6 +296,29 @@ app.post('/api/updatephone', function (req, res) {
     });
 
 });
+
+app.post('/api/productAddedToCart', function (req, res) {
+    
+    var productAdded = {};
+    
+    productAdded.name = req.body.name;
+    productAdded.description = req.body.description;
+    productAdded.price = req.body.price;
+  
+    
+    saveCartData(productAdded, function (err, count) {
+        
+        if (err) {
+            res.send("couldnt save phone into db"+ "and cart count is :"+count);
+        }
+        else {
+            res.set("Content-Type: application/json");
+            res.send(count);
+        }
+    });
+
+});
+
 
 app.use(express.static(__dirname + '/public'));
 http.createServer(app).listen(port);

@@ -5,7 +5,7 @@
 var app=angular.module("myApp",['ui.router']);
 
 var products = [];
-
+var productsToCart = [];
 
 var count = 0;
 
@@ -83,6 +83,10 @@ app.controller("PhoneCtrl", ["$scope", "$rootScope", "$http", "$state", function
 
         });
 
+        $scope.AddToCart = function (product) {
+            $rootScope.productAdded = product;
+            $state.go('cart');
+        };
        
     }]);
 
@@ -91,29 +95,37 @@ app.controller("PhoneCtrl", ["$scope", "$rootScope", "$http", "$state", function
 
 app.controller("cartCtrl", ["$scope", "$rootScope", "$http", "$state", function ($scope, $rootScope, $http , $state){
         
-        var products = [];
+        
         var elm = null;
-        $scope.AddToCart = function (product) {
-            
-            var productAddedToCart = product.name;
-            $http({
+        
+        var product = $rootScope.productAdded;
+        
+        var productAdded = {
+            name : product.name,
+            description: product.description,
+            price: product.price,
+          
+                       
+        };
+        $http({
                 url: "/api/productAddedToCart",
                 method: "post",
+                data: productAdded,
                 headers: { 'Content-Type': "application/json" }
             }).then(function (res) {
                 $scope.count += 1;
         
             }, function (err) { 
         
-        
+                console.log("Couldnt add to cart");
         
             });
 
 
-            elm = angular.element($("#cart"));
-            $scope.products.push(product);
+         
+         //   $scope.productsToCart.push(productAdded);
 
-        };
+     
       
     }]);
 
