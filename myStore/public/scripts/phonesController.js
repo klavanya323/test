@@ -113,7 +113,7 @@ app.controller("cartCtrl", ["$scope", "$rootScope", "$http", "$state", function 
                 data: productAdded,
                 headers: { 'Content-Type': "application/json" }
             }).then(function (res) {
-                $scope.count += 1;
+                $scope.count = count+1;
         
             }, function (err) { 
         
@@ -123,7 +123,7 @@ app.controller("cartCtrl", ["$scope", "$rootScope", "$http", "$state", function 
 
 
          
-         //   $scope.productsToCart.push(productAdded);
+          $scope.productsToCart.push(productAdded);
 
      
       

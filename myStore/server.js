@@ -1,10 +1,13 @@
 ﻿var http = require('http');
 var express = require('express');
 var mongodb = require('mongodb');
+var bodyParser = require('body-parser');
 var app = express();
 var port = process.env.port || 1337;
 var theDb = null;
 var count = 0;
+
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
     res.redirect("/htmls/index.html");
@@ -318,6 +321,7 @@ app.post('/api/productAddedToCart', function (req, res) {
     });
 
 });
+
 
 
 app.use(express.static(__dirname + '/public'));
